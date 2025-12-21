@@ -1,15 +1,17 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { Coins, Star, Menu } from 'lucide-react';
+import { Coins, Star, Menu, Sun, Moon } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 import LoginButton from './LoginButton';
+import { useTheme } from '../context/ThemeContext';
 
 const Navbar = () => {
   const { user } = useAuth();
   const [isMenuOpen, setIsMenuOpen] = React.useState(false);
+  const { theme, toggleTheme } = useTheme();
 
   return (
-    <nav className="bg-gray-800 border-b border-gray-700">
+    <nav className="bg-white dark:bg-gray-900 border-b border-gray-200 dark:border-gray-700">
       <div className="container mx-auto px-4">
         <div className="flex items-center justify-between h-16">
           <Link to="/" className="flex items-center space-x-2">
@@ -18,6 +20,13 @@ const Navbar = () => {
           </Link>
 
           <div className="hidden md:flex items-center space-x-4">
+            <button
+              onClick={toggleTheme}
+              aria-label="Toggle theme"
+              className="flex items-center justify-center p-2 rounded-md text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800"
+            >
+              {theme === 'dark' ? <Sun className="h-5 w-5" /> : <Moon className="h-5 w-5" />}
+            </button>
             <Link to="/" className="text-gray-300 hover:text-white px-3 py-2">
               Cryptocurrencies
             </Link>
