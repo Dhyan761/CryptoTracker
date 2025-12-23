@@ -4,6 +4,7 @@ import axios from 'axios';
 import { Star, TrendingUp, DollarSign, BarChart3 } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 import { useWatchlist } from '../context/WatchlistContext';
+import PriceChart from '../components/PriceChart';
 
 interface CoinData {
   id: string;
@@ -181,6 +182,11 @@ const CoinDetails = () => {
             </div>
           </div>
         </div>
+      </div>
+
+      <div className="mb-8">
+        <h2 className="text-xl font-semibold mb-4">Price History</h2>
+        <PriceChart id={id as string} days={30} />
       </div>
 
       <div className="bg-gray-800 p-6 rounded-lg">
