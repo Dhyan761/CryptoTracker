@@ -1,50 +1,11 @@
-import React, { useState, useEffect } from 'react';
-import axios from 'axios';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Search, TrendingUp, ArrowUp, ArrowDown } from 'lucide-react';
-
-interface Coin {
-  id: string;
-  symbol: string;
-  name: string;
-  image: string;
-  current_price: number;
-  price_change_percentage_24h: number;
-  market_cap: number;
-}
+import { usePrices } from '../context/PriceContext';
 
 const Home = () => {
-  const [coins, setCoins] = useState<Coin[]>([]);
+  const { coins, loading } = usePrices();
   const [search, setSearch] = useState('');
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    const fetchCoins = async () => {
-      try {
-        const response = await axios.get(
-          'https://api.coingecko.com/api/v3/coins/markets',
-          {
-            params: {
-              vs_currency: 'usd',
-              order: 'market_cap_desc',
-              per_page: 100,
-              page: 1,
-              sparkline: false,
-            },
-          }
-        );
-        setCoins(response.data);
-        setLoading(false);
-      } catch (error) {
-        console.error('Error fetching coins:', error);
-        setLoading(false);
-      }
-    };
-
-    fetchCoins();
-    const interval = setInterval(fetchCoins, 60000); // Update every minute
-    return () => clearInterval(interval);
-  }, []);
 
   const filteredCoins = coins.filter(
     (coin) =>

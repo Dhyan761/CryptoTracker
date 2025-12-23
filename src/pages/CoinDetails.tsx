@@ -3,6 +3,7 @@ import { useParams } from 'react-router-dom';
 import axios from 'axios';
 import { Star, TrendingUp, DollarSign, BarChart3 } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
+import { useWatchlist } from '../context/WatchlistContext';
 
 interface CoinData {
   id: string;
@@ -41,6 +42,8 @@ const CoinDetails = () => {
   const { user } = useAuth();
   const [isWatchlisted, setIsWatchlisted] = useState(false);
 
+  const { add, remove, has } = useWatchlist();
+
   useEffect(() => {
     const fetchCoinData = async () => {
       try {
@@ -68,6 +71,10 @@ const CoinDetails = () => {
     fetchCoinData();
   }, [id]);
 
+  useEffect(() => {
+    if (id) setIsWatchlisted(has(id));
+  }, [id, has]);
+
   if (loading) {
     return (
       <div className="flex justify-center items-center h-64">
@@ -85,8 +92,13 @@ const CoinDetails = () => {
       alert('Please login to add to watchlist');
       return;
     }
-    setIsWatchlisted(!isWatchlisted);
-    // Here you would typically update the watchlist in your backend
+    if (isWatchlisted) {
+      remove(id as string);
+      setIsWatchlisted(false);
+    } else {
+      add(id as string);
+      setIsWatchlisted(true);
+    }
   };
 
   return (
