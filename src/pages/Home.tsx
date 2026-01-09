@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Search, TrendingUp, ArrowUp, ArrowDown } from 'lucide-react';
 import { usePrices } from '../context/PriceContext';
+import Recommendations from '../components/Recommendations';
 
 const Home = () => {
   const { coins, loading } = usePrices();
@@ -38,6 +39,8 @@ const Home = () => {
           <span>Top 100</span>
         </div>
       </div>
+
+      <Recommendations />
 
       <div className="overflow-x-auto">
         <table className="w-full">
